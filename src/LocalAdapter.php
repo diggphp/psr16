@@ -7,6 +7,7 @@ namespace DiggPHP\Psr16;
 use Composer\InstalledVersions;
 use Exception;
 use Psr\SimpleCache\CacheInterface;
+use ReflectionClass;
 use Throwable;
 
 class LocalAdapter implements CacheInterface
@@ -17,7 +18,7 @@ class LocalAdapter implements CacheInterface
     {
         if (is_null($cache_dir)) {
             if (class_exists(InstalledVersions::class)) {
-                $cache_dir = InstalledVersions::getRootPackage()['install_path'] . '/runtime/cache/';
+                $cache_dir = dirname(dirname(dirname((new ReflectionClass(InstalledVersions::class))->getFileName()))) . '/runtime/cache/';
             } else {
                 $cache_dir = __DIR__ . '/runtime/cache/';
             }
